@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard";
 
-const PokemonList = () => {
+const PokemonList = ({ filters }) => {
+  const searchQuery = filters.searchQuery;
   const [pokemonList, setPokemonList] = useState([]);
 
+  console.log(filters);
   useEffect(() => {
     const fetchPokemon = async () => {
       try {
-        const response = await fetch("/api/api");
+        const queryParams = [];
+        if (searchQuery) {
+          queryParams.push(`name=${searchQuery}`);
+        }
+        const url = `/api/api${
+          queryParams.length ? `?${queryParams.join("&")}` : ""
+        }`;
+
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch Pokémon");
         }
@@ -19,7 +29,7 @@ const PokemonList = () => {
     };
 
     fetchPokemon();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className="pokemon__list-wrapper">

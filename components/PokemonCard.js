@@ -22,7 +22,7 @@ const PokemonCard = ({ pokemon }) => {
         alt={pokemon.name}
         className="w-full max-h-40"
       />
-      <div className="px-6 py-4">
+      <div className="px-4 py-2">
         <div className="font-bold text-lg mb-2">{pokemon.name}</div>
         <p className="text-gray-700 text-base">
           {pokemon.types.map(({ type: { name } }, index) => (
