@@ -1,0 +1,67 @@
+// schema.prisma
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Stat {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique()
+  url          String
+  pokemonStats PokemonStat[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Type {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique()
+  url         String
+  pokemonType PokemonType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model PokemonType {
+  id        Int @id @default(autoincrement())
+  slot      Int
+  typeId    Int
+  pokemonId Int
+
+  pokemon Pokemon @relation(fields: [pokemonId], references: [id])
+  type    Type    @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model PokemonStat {
+  id        Int @id @default(autoincrement())
+  baseStat  Int
+  effort    Int
+  statId    Int
+  pokemonId Int
+
+  pokemon Pokemon @relation(fields: [pokemonId], references: [id])
+  stat    Stat    @relation(fields: [statId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Pokemon {
+  id    Int           @id @default(autoincrement())
+  name  String
+  stats PokemonStat[]
+  types PokemonType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
