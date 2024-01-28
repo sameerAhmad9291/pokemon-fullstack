@@ -1,7 +1,7 @@
+import PokemonList from "../components/PokemonList";
+
 export default function Home() {
   return (
-    <div>
-      {/* Your code goes here. Have fun! */}
-    </div>
-  )
+      <PokemonList/>
+  );
 }
