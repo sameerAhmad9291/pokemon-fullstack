@@ -4,9 +4,17 @@ const prismaService = new PrismaClient();
 
 export default async function handler(req, res) {
   try {
+    const filterParams = req.query || undefined;
     const pokemons = await prismaService.pokemon.findMany({
       take: 151,
       skip: 0,
+      where: filterParams
+        ? {
+            name: {
+              contains: filterParams.name,
+            },
+          }
+        : undefined,
       select: {
         id: true,
         name: true,
