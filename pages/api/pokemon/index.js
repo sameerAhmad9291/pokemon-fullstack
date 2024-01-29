@@ -5,7 +5,7 @@ const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
 import { PrismaClient } from "@prisma/client";
 const prismaService = new PrismaClient();
 
-const getAllPokemons = async (limit) => {
+const getAllPokemons = async () => {
   const paginatedResponse = await fetch(BASE_URL);
   const data = await paginatedResponse.json();
   const results = data.results || [];
@@ -80,6 +80,9 @@ async function savePokemons(pokemonList) {
           effort,
           stat: { name, url },
         } of pokemon.stats) {
+          console.info(
+            `${[pokemon.id]} - ${[pokemon.name]} -- ${pokemon.stats.length}`
+          );
           // Check if the PokemonStat already exists for the current Pokemon and stat
           const statExists = await prismaService.pokemonStat.findFirst({
             where: {

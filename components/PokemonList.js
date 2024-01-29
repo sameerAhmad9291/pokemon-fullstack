@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard";
 
 const PokemonList = ({ filters }) => {
-  const searchQuery = filters.searchQuery;
+  const { searchQuery, stats, types } = filters || {};
   const [pokemonList, setPokemonList] = useState([]);
 
-  console.log(filters);
   useEffect(() => {
     const fetchPokemon = async () => {
       try {
@@ -13,6 +12,13 @@ const PokemonList = ({ filters }) => {
         if (searchQuery) {
           queryParams.push(`name=${searchQuery}`);
         }
+        if (stats) {
+          queryParams.push(`stats=${stats}`);
+        }
+        if (types) {
+          queryParams.push(`types=${types}`);
+        }
+
         const url = `/api/api${
           queryParams.length ? `?${queryParams.join("&")}` : ""
         }`;
@@ -29,7 +35,7 @@ const PokemonList = ({ filters }) => {
     };
 
     fetchPokemon();
-  }, [searchQuery]);
+  }, [searchQuery, stats, types]);
 
   return (
     <div className="pokemon__list-wrapper">

@@ -5,16 +5,49 @@ const prismaService = new PrismaClient();
 export default async function handler(req, res) {
   try {
     const filterParams = req.query || undefined;
+    let { stats, name, types } = filterParams || {};
+    if (typeof stats === "string") {
+      stats = [stats];
+    }
+    if (typeof types === "string") {
+      types = [types];
+    }
+
     const pokemons = await prismaService.pokemon.findMany({
       take: 151,
       skip: 0,
-      where: filterParams
-        ? {
-            name: {
-              contains: filterParams.name,
+      where: {
+        /// if name filter provided
+        ...(name && {
+          name: {
+            contains: name,
+          },
+        }),
+        /// if stats filter provided
+        ...(stats && {
+          stats: {
+            some: {
+              stat: {
+                name: {
+                  in: stats,
+                },
+              },
             },
-          }
-        : undefined,
+          },
+        }),
+        /// if type filter provided
+        ...(types && {
+          types: {
+            some: {
+              type: {
+                name: {
+                  in: types,
+                },
+              },
+            },
+          },
+        }),
+      },
       select: {
         id: true,
         name: true,
