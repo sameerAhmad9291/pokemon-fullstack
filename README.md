@@ -1,3 +1,15 @@
+## Run commands in order.
+
+`npm install`
+
+`npm run gen`
+
+`npm run db:up`
+
+`npm run build`
+
+`npm run start`
+
 # Switchshop Pokémon full-stack challenge
 
 Welcome to the Switchshop Pokémon full-stack challenge!
