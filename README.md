@@ -8,6 +8,11 @@
 
 `npm run start`
 
+#### Load pokemon data into db - [link](http://localhost:3000/api/pokemon)
+  It will call the pokemon api and load details into db. It will return you loaded pokemons list. 
+  
+#### Click here view - [link](http://localhost:3000)
+
 # Switchshop Pokémon full-stack challenge
 
 Welcome to the Switchshop Pokémon full-stack challenge!
