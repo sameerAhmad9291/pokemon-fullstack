@@ -2,8 +2,6 @@
 
 `npm install`
 
-`npm run gen`
-
 `npm run db:up`
 
 `npm run build`
