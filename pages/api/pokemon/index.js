@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const limit = 151;
-const BASE_URL = `https://pokeapi.co/api/v2/pokemon?limit=${limit}`;
+const BASE_URL = `${process.env.POKEMON_BASE_URL}/pokemon?limit=${limit}`;
 
 import { PrismaClient } from "@prisma/client";
 const prismaService = new PrismaClient();
@@ -14,6 +14,7 @@ const getAllPokemons = async () => {
 
 // function to save Pokemon list into database.
 // code complexity and big(O) can be improved.
+
 async function savePokemons(pokemonList) {
   try {
     for (const pokemon of pokemonList) {
@@ -81,7 +82,9 @@ async function savePokemons(pokemonList) {
           stat: { name, url },
         } of pokemon.stats) {
           console.info(
-            `${[pokemon.id]} - ${[pokemon.name]} -- ${pokemon.stats.length}`
+            `${[pokemon.id]} - ${[pokemon.name]} -- stats: ${
+              pokemon.stats.length
+            }`
           );
           // Check if the PokemonStat already exists for the current Pokemon and stat
           const statExists = await prismaService.pokemonStat.findFirst({
