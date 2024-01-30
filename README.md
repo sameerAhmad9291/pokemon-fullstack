@@ -1,5 +1,4 @@
 ## Run commands in order.
-
 `npm install`
 
 `npm run db:up`
