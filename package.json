@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "gen": "npx prisma generate",
+    "deploy": "npm install && npm run db:up",
     "db:up": "npx prisma migrate dev --name init"
   },
   "dependencies": {
