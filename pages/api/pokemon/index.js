@@ -13,119 +13,73 @@ const getAllPokemons = async () => {
 };
 
 // function to save Pokemon list into database.
-// code complexity and big(O) can be improved.
-
 async function savePokemons(pokemonList) {
   try {
     for (const pokemon of pokemonList) {
       // Start the transaction
-      await prismaService.$transaction(async (tx) => {
-        // Create the Pokemon record
-        const createdPokemon = await tx.pokemon.upsert({
-          create: {
-            id: pokemon.id,
-            name: pokemon.name,
-          },
-          update: {
-            updatedAt: new Date().toISOString(),
-          },
-          where: {
-            id: pokemon.id,
-          },
-          include: {
-            stats: true,
-            types: true,
-          },
-        });
-
-        // Iterate through each type of the Pokemon
-        for (const {
-          slot,
-          type: { name, url },
-        } of pokemon.types) {
-          // Check if the PokemonStat already exists for the current Pokemon and stat
-          const typeExists = await prismaService.pokemonType.findFirst({
-            where: {
-              pokemonId: pokemon.id,
-              type: {
-                name,
+      const createStats = pokemon.stats.map((stat) => {
+        return {
+          baseStat: stat.base_stat,
+          effort: stat.effort,
+          stat: {
+            connectOrCreate: {
+              where: {
+                name: stat.stat.name,
+              },
+              create: {
+                name: stat.stat.name,
+                url: stat.stat.url,
               },
             },
-          });
-
-          // Check if the PokemonStat already exists for the current Pokemon and stat
-          if (!typeExists) {
-            await tx.pokemonType.create({
-              data: {
-                slot,
-                type: {
-                  connectOrCreate: {
-                    where: { name },
-                    create: {
-                      name,
-                      url,
-                    },
-                  },
-                },
-                pokemon: {
-                  connect: { id: createdPokemon.id },
-                },
-              },
-            });
-          }
-        }
-
-        // Iterate through each stat of the Pokemon
-        for (const {
-          base_stat: baseStat,
-          effort,
-          stat: { name, url },
-        } of pokemon.stats) {
-          console.info(
-            `${[pokemon.id]} - ${[pokemon.name]} -- stats: ${
-              pokemon.stats.length
-            }`
-          );
-          // Check if the PokemonStat already exists for the current Pokemon and stat
-          const statExists = await prismaService.pokemonStat.findFirst({
-            where: {
-              pokemonId: pokemon.id,
-              stat: {
-                name,
-              },
-            },
-          });
-
-          // If the PokemonStat doesn't exist, create it
-          if (!statExists) {
-            await tx.pokemonStat.create({
-              data: {
-                baseStat,
-                effort,
-                stat: {
-                  connectOrCreate: {
-                    where: { name },
-                    create: {
-                      name,
-                      url,
-                    },
-                  },
-                },
-                pokemon: {
-                  connect: { id: createdPokemon.id },
-                },
-              },
-            });
-          }
-        }
-
-        console.log(
-          "Pokemon saved successfully: ",
-          createdPokemon.id,
-          " - ",
-          createdPokemon.name
-        );
+          },
+        };
       });
+      const createTypes = pokemon.types.map((typ) => {
+        return {
+          slot: typ.slot,
+          type: {
+            connectOrCreate: {
+              where: {
+                name: typ.type.name,
+              },
+              create: {
+                name: typ.type.name,
+                url: typ.type.url,
+              },
+            },
+          },
+        };
+      });
+
+      const createdPokemon = await prismaService.pokemon.upsert({
+        where: {
+          id: pokemon.id,
+        },
+        update: {
+          updatedAt: new Date().toISOString(),
+        },
+        create: {
+          id: pokemon.id,
+          name: pokemon.name,
+          stats: {
+            create: createStats,
+          },
+          types: {
+            create: createTypes,
+          },
+        },
+        include: {
+          stats: true,
+          types: true,
+        },
+      });
+
+      console.log(
+        "Pokemon saved successfully: ",
+        createdPokemon.id,
+        " - ",
+        createdPokemon.name
+      );
     }
   } catch (error) {
     throw error;
