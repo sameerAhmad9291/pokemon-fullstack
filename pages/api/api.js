@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 const prismaService = new PrismaClient();
 
-const getPokemons = (filterParams = {}) => {
+const getPokemons = async (filterParams = {}) => {
   let { stats, name, types } = filterParams;
   if (typeof stats === "string") {
     stats = [stats];
@@ -11,7 +11,7 @@ const getPokemons = (filterParams = {}) => {
     types = [types];
   }
 
-  return prismaService.pokemon.findMany({
+  const pokemons = await prismaService.pokemon.findMany({
     take: 151,
     skip: 0,
     where: {
@@ -59,6 +59,17 @@ const getPokemons = (filterParams = {}) => {
       },
     },
   });
+
+  if (stats?.length) {
+    const sortBy = stats[0];
+    pokemons.sort((pokemonA, pokemonB) => {
+      const statsA = pokemonA.stats.find(({ stat: { name } }) => name === sortBy);
+      const statsB = pokemonB.stats.find(({ stat: { name } }) => name === sortBy);
+      return statsB.baseStat - statsA.baseStat;
+    });
+  }
+
+  return pokemons;
 };
 
 export default async function handler(req, res) {
