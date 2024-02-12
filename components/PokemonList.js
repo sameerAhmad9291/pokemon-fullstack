@@ -39,6 +39,7 @@ const PokemonList = ({ filters }) => {
 
   return (
     <div className="pokemon__list-wrapper">
+      <h1>Testing</h1>
       {pokemonList.map((pokemon) => (
         <PokemonCard key={pokemon.id} pokemon={pokemon} />
       ))}
