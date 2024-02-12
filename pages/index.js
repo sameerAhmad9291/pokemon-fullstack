@@ -1,5 +1,5 @@
 import PokemonList from "../components/PokemonList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TypeDropdown from "../components/TypeDropdown";
 import StatDropdown from "../components/StatDropdown";
 
