@@ -1,7 +1,7 @@
-import PokemonList from "../components/PokemonList";
+import { PokemonList } from "../components/PokemonList";
 import { useState } from "react";
-import TypeDropdown from "../components/TypeDropdown";
-import StatDropdown from "../components/StatDropdown";
+import { TypeDropdown } from "../components/TypeDropdown";
+import { StatDropdown } from "../components/StatDropdown";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");

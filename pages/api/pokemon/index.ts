@@ -92,13 +92,22 @@ async function savePokemons(pokemonList) {
 // Usage: Call the function and pass the single Pokemon data as an argument
 export default async function handler(req, res) {
   try {
-    const results = await getAllPokemons(limit);
+    const results = await getAllPokemons();
 
     if (!results.length) {
       res.status(200).json([]);
     }
 
-    const pokemonHashMap = new Map();
+    const pokemonHashMap = new Map<
+      string,
+      {
+        id?: number;
+        name: string;
+        url?: string;
+        stats?: any;
+        types?: any;
+      }
+    >();
     const promiseArr = [];
 
     results.forEach(({ name, url }) => {

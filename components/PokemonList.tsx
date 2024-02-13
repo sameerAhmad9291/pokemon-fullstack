@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import PokemonCard from "./PokemonCard";
+import { PokemonCard } from "./PokemonCard";
 
-const PokemonList = ({ filters }) => {
+export interface PokemonListProps {
+  searchQuery?: string;
+  stats?: string;
+  types?: string;
+}
+
+export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
   const { searchQuery, stats, types } = filters || {};
   const [pokemonList, setPokemonList] = useState([]);
 
@@ -38,13 +44,13 @@ const PokemonList = ({ filters }) => {
   }, [searchQuery, stats, types]);
 
   return (
-    <div className="pokemon__list-wrapper">
-      <h1>Testing</h1>
-      {pokemonList.map((pokemon) => (
-        <PokemonCard key={pokemon.id} pokemon={pokemon} />
-      ))}
-    </div>
+    <>
+      <h1 className="text-3xl ml-5 mt-5">Testing</h1>
+      <div className="pokemon__list-wrapper">
+        {pokemonList.map((pokemon) => (
+          <PokemonCard key={pokemon.id} pokemon={pokemon} />
+        ))}
+      </div>
+    </>
   );
 };
-
-export default PokemonList;

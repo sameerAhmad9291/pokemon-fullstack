@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 
-export default function TypeDropdown({ onChange }) {
-  const [pokemonTypes, setPokemonTypes] = useState([]);
+export const StatDropdown = ({ onChange }) => {
+  const [pokemonStats, setPokemonStats] = useState([]);
 
-  // useEffect for pokemon type
+  // useEffect for pokemon stats
   useEffect(() => {
-    const fetchPokemonTypes = async () => {
+    const fetchPokemonStats = async () => {
       try {
-        const url = `/api/pokemon/types`;
+        const url = `/api/pokemon/stats`;
         const response = await fetch(url);
         const data = await response.json();
-        setPokemonTypes(data);
+        setPokemonStats(data);
       } catch (error) {
         console.error("Error fetching Pokémon:", error);
       }
     };
 
-    if (!pokemonTypes.length) {
-      fetchPokemonTypes();
+    if (!pokemonStats.length) {
+      fetchPokemonStats();
     }
   }, []);
 
@@ -26,10 +26,10 @@ export default function TypeDropdown({ onChange }) {
       onChange={onChange}
       className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md focus:outline-none mx-2 mt-2"
     >
-      <option value={""}> --- Select Type --- </option>
-      {pokemonTypes.map(({ id, name }) => {
+      <option value={""}> --- Select Stat --- </option>
+      {pokemonStats.map(({ id, name }) => {
         return <option key={id}>{name}</option>;
       })}
     </select>
   );
-}
+};

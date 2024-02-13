@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 const prismaService = new PrismaClient();
 
-const getPokemons = async (filterParams = {}) => {
+const getPokemons = async (filterParams = {} as any) => {
   let { stats, name, types } = filterParams;
   if (typeof stats === "string") {
     stats = [stats];
@@ -63,8 +63,13 @@ const getPokemons = async (filterParams = {}) => {
   if (stats?.length) {
     const sortBy = stats[0];
     pokemons.sort((pokemonA, pokemonB) => {
-      const statsA = pokemonA.stats.find(({ stat: { name } }) => name === sortBy);
-      const statsB = pokemonB.stats.find(({ stat: { name } }) => name === sortBy);
+      const statsA = pokemonA.stats.find(
+        ({ stat: { name } }) => name === sortBy
+      ) || { baseStat: 0 };
+      const statsB = pokemonB.stats.find(
+        ({ stat: { name } }) => name === sortBy
+      ) || { baseStat: 0 };
+
       return statsB.baseStat - statsA.baseStat;
     });
   }

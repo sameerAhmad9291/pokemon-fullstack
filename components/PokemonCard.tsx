@@ -14,7 +14,7 @@ const PokemonStat = ({ stat }) => {
   );
 };
 
-const PokemonCard = ({ pokemon }) => {
+export const PokemonCard = ({ pokemon }) => {
   return (
     <div className="pokemon-card">
       <img
@@ -38,5 +38,3 @@ const PokemonCard = ({ pokemon }) => {
     </div>
   );
 };
-
-export default PokemonCard;
