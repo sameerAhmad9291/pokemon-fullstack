@@ -8,9 +8,12 @@ const PokemonType = ({ type }) => {
 
 const PokemonStat = ({ stat }) => {
   return (
-    <span className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mr-2 mb-2">
-      {stat.stat.name} : {stat.baseStat}
-    </span>
+    <>
+      <span className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2">
+        {stat.stat.name}
+      </span>
+      <b className="bg-red-400 rounded-full p-1 mr-2">{stat.baseStat}</b>
+    </>
   );
 };
 

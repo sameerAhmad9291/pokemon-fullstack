@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PokemonCard } from "./PokemonCard";
+import axios from "axios";
 
 export interface PokemonListProps {
   searchQuery?: string;
@@ -29,11 +30,8 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
           queryParams.length ? `?${queryParams.join("&")}` : ""
         }`;
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch Pokémon");
-        }
-        const data = await response.json();
+        const response = await axios.get(url);
+        const data = response.data;
         setPokemonList(data);
       } catch (error) {
         console.error("Error fetching Pokémon:", error);
