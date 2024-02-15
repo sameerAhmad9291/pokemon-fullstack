@@ -28,5 +28,5 @@ jobs:
           config: video=false
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
-          build: yarn run build
-          start: yarn run dev
+          build: npm run build
+          start: npm run start
