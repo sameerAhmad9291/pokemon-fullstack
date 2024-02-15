@@ -9,25 +9,32 @@ const PokemonType = ({ type }) => {
 const PokemonStat = ({ stat }) => {
   return (
     <>
-      <span className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2">
-        {stat.stat.name}
+      <span
+        className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2"
+        data-cy="cypress-pokemon-type"
+      >
+        {stat.stat.name}: <b>{stat.baseStat}</b>
       </span>
-      <b className="bg-red-400 rounded-full p-1 mr-2">{stat.baseStat}</b>
     </>
   );
 };
 
 export const PokemonCard = ({ pokemon }) => {
   return (
-    <div className="pokemon-card">
+    <div className="pokemon-card" data-cy="cypress-pokemon-card">
       <img
         loading="lazy"
         src={`/sprites/${pokemon.id}.svg`}
         alt={pokemon.name}
-        className="w-full max-h-40 "
+        className="w-full max-h-40"
       />
       <div className="px-4 py-2">
-        <div className="font-bold text-lg mb-2 capitalize">{pokemon.name}</div>
+        <div
+          className="font-bold text-lg mb-2 capitalize"
+          data-cy="cypress-pokemon-name"
+        >
+          {pokemon.name}
+        </div>
         <p className="text-gray-700 text-base">
           {pokemon.types.map(({ type: { name } }, index) => (
             <PokemonType type={name} key={index} />

@@ -43,7 +43,6 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
 
   return (
     <>
-      <h1 className="text-3xl ml-5 mt-5">Testing</h1>
       <div className="pokemon__list-wrapper">
         {pokemonList.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />

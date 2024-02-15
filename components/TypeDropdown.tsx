@@ -25,6 +25,7 @@ export const TypeDropdown = ({ onChange }) => {
     <select
       onChange={onChange}
       className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md focus:outline-none mx-2 mt-2"
+      data-cy="cypress-filter-types-id"
     >
       <option value={""}> --- Select Type --- </option>
       {pokemonTypes.map(({ id, name }) => {

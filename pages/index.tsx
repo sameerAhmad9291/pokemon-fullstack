@@ -15,6 +15,7 @@ export default function Home() {
           {/* Search by name filter */}
           <input
             type="text"
+            data-cy="cypress-filter-search-query"
             placeholder="Pokemon Name"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
