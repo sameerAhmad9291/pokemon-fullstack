@@ -18,14 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v6
         with:
+          config-file: cypress.config.ts
           config: video=false
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
-          build: yarn run build
-          start: yarn run dev
+          build: npm run build
+          start: npm run start
