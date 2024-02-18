@@ -1,7 +1,7 @@
 const PokemonType = ({ type }) => {
   return (
     <span className="text-xs inline-block bg-blue-500 text-white px-2 py-1 rounded-md mr-2 mb-2">
-      {type}
+      {type}{" "}
     </span>
   );
 };
@@ -9,10 +9,7 @@ const PokemonType = ({ type }) => {
 const PokemonStat = ({ stat }) => {
   return (
     <>
-      <span
-        className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2"
-        data-cy="cypress-pokemon-type"
-      >
+      <span className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2 mr-1">
         {stat.stat.name}: <b>{stat.baseStat}</b>
       </span>
     </>
@@ -35,11 +32,12 @@ export const PokemonCard = ({ pokemon }) => {
         >
           {pokemon.name}
         </div>
-        <p className="text-gray-700 text-base">
+        <p className="text-gray-700 text-base" data-cy="cypress-pokemon-type">
           {pokemon.types.map(({ type: { name } }, index) => (
             <PokemonType type={name} key={index} />
           ))}
-          <br />
+        </p>
+        <p className="text-gray-700 text-base" data-cy="cypress-pokemon-stats">
           {pokemon.stats.map((stat, index) => (
             <PokemonStat stat={stat} key={index} />
           ))}
