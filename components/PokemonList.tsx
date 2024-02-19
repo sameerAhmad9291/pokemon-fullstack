@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { PokemonCard } from "./PokemonCard";
 import axios from "axios";
+import { Pokemon } from "../types/pokemon";
 
 export interface PokemonListProps {
   searchQuery?: string;
-  stats?: string;
+  sortBy?: string;
   types?: string;
 }
 
 export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
-  const { searchQuery, stats, types } = filters || {};
-  const [pokemonList, setPokemonList] = useState([]);
+  const { searchQuery, sortBy, types } = filters || {};
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -19,8 +20,8 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
         if (searchQuery?.length > 2) {
           queryParams.push(`name=${searchQuery}`);
         }
-        if (stats) {
-          queryParams.push(`stats=${stats}`);
+        if (sortBy) {
+          queryParams.push(`sortBy=${sortBy}`);
         }
         if (types) {
           queryParams.push(`types=${types}`);
@@ -30,7 +31,7 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
           queryParams.length ? `?${queryParams.join("&")}` : ""
         }`;
 
-        const response = await axios.get(url);
+        const response = await axios.get<Pokemon[]>(url);
         const data = response.data;
         setPokemonList(data);
       } catch (error) {
@@ -39,7 +40,7 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
     };
 
     fetchPokemon();
-  }, [searchQuery, stats, types]);
+  }, [searchQuery, sortBy, types]);
 
   return (
     <>

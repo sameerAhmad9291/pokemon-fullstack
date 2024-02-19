@@ -1,12 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
+import { GetPokemonQueryParam } from "./types";
 const prismaService = new PrismaClient();
 
-const getPokemons = async (filterParams = {} as any) => {
-  let { stats, name, types } = filterParams;
-  if (typeof stats === "string") {
-    stats = [stats];
-  }
+const getPokemons = async (filterParams: GetPokemonQueryParam) => {
+  let { sortBy, name, types } = filterParams;
+
   if (typeof types === "string") {
     types = [types];
   }
@@ -19,18 +19,6 @@ const getPokemons = async (filterParams = {} as any) => {
       ...(name && {
         name: {
           startsWith: name,
-        },
-      }),
-      /// if stats filter provided
-      ...(stats && {
-        stats: {
-          some: {
-            stat: {
-              name: {
-                in: stats,
-              },
-            },
-          },
         },
       }),
       /// if type filter provided
@@ -60,8 +48,7 @@ const getPokemons = async (filterParams = {} as any) => {
     },
   });
 
-  if (stats?.length) {
-    const sortBy = stats[0];
+  if (sortBy) {
     pokemons.sort((pokemonA, pokemonB) => {
       const statsA = pokemonA.stats.find(
         ({ stat: { name } }) => name === sortBy
@@ -77,17 +64,20 @@ const getPokemons = async (filterParams = {} as any) => {
   return pokemons;
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     switch (req.method) {
       case "GET": {
-        const filterParams = req.query;
+        const filterParams = (req.query as GetPokemonQueryParam) || {};
         const pokemons = await getPokemons(filterParams);
         res.status(200).json(pokemons);
         return;
       }
       default: {
-        res.status(404).send();
+        res.status(404);
         return;
       }
     }

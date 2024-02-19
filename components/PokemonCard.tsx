@@ -1,4 +1,10 @@
-const PokemonType = ({ type }) => {
+import { Pokemon, Stats } from "../types/pokemon";
+
+export interface PokemonTypeProps {
+  type: string;
+}
+
+const PokemonType = ({ type }: PokemonTypeProps) => {
   return (
     <span className="text-xs inline-block bg-blue-500 text-white px-2 py-1 rounded-md mr-2 mb-2">
       {type}{" "}
@@ -6,7 +12,11 @@ const PokemonType = ({ type }) => {
   );
 };
 
-const PokemonStat = ({ stat }) => {
+export interface PokemonStatProps {
+  stat: Stats;
+}
+
+const PokemonStat = ({ stat }: PokemonStatProps) => {
   return (
     <>
       <span className="text-xs inline-block bg-red-400 text-white px-2 py-1 rounded-md mb-2 mr-1">
@@ -16,7 +26,11 @@ const PokemonStat = ({ stat }) => {
   );
 };
 
-export const PokemonCard = ({ pokemon }) => {
+export interface PokemonProps {
+  pokemon: Pokemon;
+}
+
+export const PokemonCard = ({ pokemon }: PokemonProps) => {
   return (
     <div className="pokemon-card" data-cy="cypress-pokemon-card">
       <img

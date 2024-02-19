@@ -18,6 +18,7 @@ describe("Validate Home Page", () => {
 
     cy.get(CypressIds.pokemonSearchInputId).type(searchQuery);
     cy.wait("@searchByNameApi");
+    cy.get("@searchByNameApi").should("have.property", "state", "Completed");
 
     // validating each pokenmon name
     cy.get(CypressIds.pokemonNameId).each(($el) => {
@@ -39,6 +40,7 @@ describe("Validate Home Page", () => {
       .should("have.value", pokemonType);
 
     cy.wait("@typeFilterApi");
+    cy.get("@typeFilterApi").should("have.property", "state", "Completed");
 
     // validating each pokenmon type
     cy.get(`${CypressIds.pokemonCardId} ${CypressIds.pokemonTypeId}`).each(
@@ -46,5 +48,22 @@ describe("Validate Home Page", () => {
         expect($el.text()).contains(pokemonType);
       }
     );
+  });
+
+  it(`should search pokemons and list only that startWith ${searchQuery}`, () => {
+    cy.intercept({
+      method: "GET",
+      url: `/api/api?name=${searchQuery}`,
+    }).as("searchByNameApi");
+
+    cy.get(CypressIds.pokemonSearchInputId).type(searchQuery);
+    cy.wait("@searchByNameApi");
+    cy.get("@searchByNameApi").should("have.property", "state", "Completed");
+
+    // validating each pokenmon name
+    cy.get(CypressIds.pokemonNameId).each(($el) => {
+      const text = $el.text()?.toLocaleLowerCase();
+      expect(text.startsWith(searchQuery)).to.be.true;
+    });
   });
 });

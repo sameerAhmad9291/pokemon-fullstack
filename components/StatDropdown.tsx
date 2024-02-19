@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import axios from "axios";
 
-export const StatDropdown = ({ onChange }) => {
-  const [pokemonStats, setPokemonStats] = useState([]);
+export interface StatDropdownProps {
+  onChange: ChangeEventHandler;
+}
+
+export const StatDropdown = ({ onChange }: StatDropdownProps) => {
+  const [pokemonStats, setPokemonStats] = useState<Stat[]>([]);
 
   // useEffect for pokemon stats
   useEffect(() => {
     const fetchPokemonStats = async () => {
       try {
         const url = `/api/pokemon/stats`;
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await axios.get<Stat[]>(url);
+        const data = response.data;
         setPokemonStats(data);
       } catch (error) {
-        console.error("Error fetching Pokémon:", error);
+        console.error("Error fetching Pokémon stats:", error);
       }
     };
 
