@@ -1,5 +1,6 @@
 import { ChangeEventHandler, useEffect, useState } from "react";
 import axios from "axios";
+import { Stat } from "../types/pokemon";
 
 export interface StatDropdownProps {
   onChange: ChangeEventHandler;
