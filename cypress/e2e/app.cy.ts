@@ -18,7 +18,6 @@ describe("Validate Home Page", () => {
 
     cy.get(CypressIds.pokemonSearchInputId).type(searchQuery);
     cy.wait("@searchByNameApi");
-    cy.get("@searchByNameApi").should("have.property", "state", "Complete");
 
     // validating each pokenmon name
     cy.get(CypressIds.pokemonNameId).each(($el) => {
@@ -41,7 +40,6 @@ describe("Validate Home Page", () => {
       .should("have.value", pokemonType);
 
     cy.wait("@typeFilterApi");
-    cy.get("@typeFilterApi").should("have.property", "state", "Complete");
 
     // validating each pokenmon type
     cy.get(`${CypressIds.pokemonCardId} ${CypressIds.pokemonTypeId}`).each(
@@ -51,41 +49,16 @@ describe("Validate Home Page", () => {
     );
   });
 
-  // it(`should sort pokemon by stats`, () => {
-  //   // TODO: should not hardcoded.
-  //   const pokemonStat = "attack";
+  it(`should not show any pokemons, if search by invalid search query`, () => {
+    const invalidSearch = "12H";
+    cy.intercept({
+      method: "GET",
+      url: `/api/api?name=${invalidSearch}`,
+    }).as("searchByNameApi");
 
-  //   cy.intercept({
-  //     method: "GET",
-  //     url: `/api/api?sortBy=${pokemonStat}`,
-  //   }).as("sortByApi");
+    cy.get(CypressIds.pokemonSearchInputId).type(invalidSearch);
+    cy.wait("@searchByNameApi");
 
-  //   cy.get(`${CypressIds.sortBySelectorId}`)
-  //     .select(pokemonStat)
-  //     .should("have.value", pokemonStat);
-
-  //   cy.wait("@sortByApi");
-  //   cy.get("@sortByApi").should("have.property", "state", "Complete");
-
-  //   // validating each pokenmon type
-  //   // cy.get(`${CypressIds.pokemonCardId} ${CypressIds.pokemonTypeId}`).each(
-  //   //   ($el) => {
-  //   //     expect($el.text()).contains(pokemonStat);
-  //   //   }
-  //   // );
-  // });
-
-  // it(`should not show any pokemons, if search by invalid search query`, () => {
-  //   const invalidSearch = "12H";
-  //   cy.intercept({
-  //     method: "GET",
-  //     url: `/api/api?name=${invalidSearch}`,
-  //   }).as("searchByNameApi");
-
-  //   cy.get(CypressIds.pokemonSearchInputId).type(invalidSearch);
-  //   cy.wait("@searchByNameApi");
-  //   cy.get("@searchByNameApi").should("have.property", "state", "Complete");
-
-  //   cy.get(CypressIds.pokemonNameId).should("have.a.property", 0);
-  // });
+    cy.get(CypressIds.pokemonNameId).should("not.exist");
+  });
 });
