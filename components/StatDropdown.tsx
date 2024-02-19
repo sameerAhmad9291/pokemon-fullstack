@@ -31,6 +31,7 @@ export const StatDropdown = ({ onChange }: StatDropdownProps) => {
     <select
       onChange={onChange}
       className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md focus:outline-none mx-2 mt-2"
+      data-cy="cypress-sort-by-id"
     >
       <option value={""}> --- Sort By --- </option>
       {pokemonStats.map(({ id, name }) => {
