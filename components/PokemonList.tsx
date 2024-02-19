@@ -16,7 +16,7 @@ export const PokemonList = ({ filters }: { filters: PokemonListProps }) => {
     const fetchPokemon = async () => {
       try {
         const queryParams = [];
-        if (searchQuery) {
+        if (searchQuery?.length > 2) {
           queryParams.push(`name=${searchQuery}`);
         }
         if (stats) {

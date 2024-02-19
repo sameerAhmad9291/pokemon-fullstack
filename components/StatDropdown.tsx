@@ -26,7 +26,7 @@ export const StatDropdown = ({ onChange }) => {
       onChange={onChange}
       className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md focus:outline-none mx-2 mt-2"
     >
-      <option value={""}> --- Select Stat --- </option>
+      <option value={""}> --- Sort By --- </option>
       {pokemonStats.map(({ id, name }) => {
         return <option key={id}>{name}</option>;
       })}
