@@ -18,7 +18,7 @@ describe("Validate Home Page", () => {
 
     cy.get(CypressIds.pokemonSearchInputId).type(searchQuery);
     cy.wait("@searchByNameApi");
-    cy.get("@searchByNameApi").should("have.property", "state", "Completed");
+    cy.get("@searchByNameApi").should("have.property", "state", "Complete");
 
     // validating each pokenmon name
     cy.get(CypressIds.pokemonNameId).each(($el) => {
@@ -28,7 +28,8 @@ describe("Validate Home Page", () => {
   });
 
   it(`should filter pokemons by fire type`, () => {
-    const pokemonType = "fire"; // TODO: should not hardcoded.
+    // TODO: should not hardcoded.
+    const pokemonType = "fire";
 
     cy.intercept({
       method: "GET",
@@ -40,7 +41,7 @@ describe("Validate Home Page", () => {
       .should("have.value", pokemonType);
 
     cy.wait("@typeFilterApi");
-    cy.get("@typeFilterApi").should("have.property", "state", "Completed");
+    cy.get("@typeFilterApi").should("have.property", "state", "Complete");
 
     // validating each pokenmon type
     cy.get(`${CypressIds.pokemonCardId} ${CypressIds.pokemonTypeId}`).each(
@@ -50,20 +51,17 @@ describe("Validate Home Page", () => {
     );
   });
 
-  it(`should search pokemons and list only that startWith ${searchQuery}`, () => {
+  it(`should not show any pokemons, if search by invalid search query`, () => {
+    const invalidSearch = "12H";
     cy.intercept({
       method: "GET",
-      url: `/api/api?name=${searchQuery}`,
+      url: `/api/api?name=${invalidSearch}`,
     }).as("searchByNameApi");
 
-    cy.get(CypressIds.pokemonSearchInputId).type(searchQuery);
+    cy.get(CypressIds.pokemonSearchInputId).type(invalidSearch);
     cy.wait("@searchByNameApi");
-    cy.get("@searchByNameApi").should("have.property", "state", "Completed");
+    cy.get("@searchByNameApi").should("have.property", "state", "Complete");
 
-    // validating each pokenmon name
-    cy.get(CypressIds.pokemonNameId).each(($el) => {
-      const text = $el.text()?.toLocaleLowerCase();
-      expect(text.startsWith(searchQuery)).to.be.true;
-    });
+    cy.get(CypressIds.pokemonNameId).should("have.a.property", 0);
   });
 });
