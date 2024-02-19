@@ -36,7 +36,7 @@ describe("Validate Home Page", () => {
     }).as("typeFilterApi");
 
     cy.get(`${CypressIds.filterTypesSelectorId}`)
-      .select(3)
+      .select(pokemonType)
       .should("have.value", pokemonType);
 
     cy.wait("@typeFilterApi");
