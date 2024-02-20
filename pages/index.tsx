@@ -4,9 +4,9 @@ import { TypeDropdown } from "../components/TypeDropdown";
 import { StatDropdown } from "../components/StatDropdown";
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [stat, setStat] = useState("");
-  const [type, setType] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [stat, setStat] = useState<string>("");
+  const [type, setType] = useState<string>("");
 
   return (
     <main className="mt-1 max-width">
@@ -23,12 +23,20 @@ export default function Home() {
           />
 
           {/* filter by type */}
-          <TypeDropdown onChange={(event) => setType(event.target.value)} />
+          <TypeDropdown
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+              setType(event.target.value)
+            }
+          />
 
           {/* filter by stats */}
-          <StatDropdown onChange={(event) => setStat(event.target.value)} />
+          <StatDropdown
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+              setStat(event.target.value)
+            }
+          />
         </div>
-        <PokemonList filters={{ searchQuery, stats: stat, types: type }} />
+        <PokemonList filters={{ searchQuery, sortBy: stat, types: type }} />
       </section>
     </main>
   );

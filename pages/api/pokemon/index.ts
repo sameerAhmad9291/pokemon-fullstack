@@ -3,6 +3,7 @@ const limit = 151;
 const BASE_URL = `${process.env.POKEMON_BASE_URL}/pokemon?limit=${limit}`;
 
 import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from "next";
 const prismaService = new PrismaClient();
 
 const getAllPokemons = async () => {
@@ -90,7 +91,10 @@ async function savePokemons(pokemonList) {
 }
 
 // Usage: Call the function and pass the single Pokemon data as an argument
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const results = await getAllPokemons();
 

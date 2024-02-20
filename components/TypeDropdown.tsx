@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { Type } from "../types/pokemon";
 
-export const TypeDropdown = ({ onChange }) => {
-  const [pokemonTypes, setPokemonTypes] = useState([]);
+export interface TypeDropdownProps {
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;}
+
+export const TypeDropdown = ({ onChange }: TypeDropdownProps) => {
+  const [pokemonTypes, setPokemonTypes] = useState<Type[]>([]);
 
   // useEffect for pokemon type
   useEffect(() => {
     const fetchPokemonTypes = async () => {
       try {
         const url = `/api/pokemon/types`;
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await axios.get<Type[]>(url);
+        const data = response.data;
         setPokemonTypes(data);
       } catch (error) {
         console.error("Error fetching Pokémon:", error);

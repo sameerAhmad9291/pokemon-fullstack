@@ -26,8 +26,22 @@ describe("Validate Home Page", () => {
     });
   });
 
+  it(`should not show any pokemons, if search by invalid search query`, () => {
+    const invalidSearch = "12H";
+    cy.intercept({
+      method: "GET",
+      url: `/api/api?name=${invalidSearch}`,
+    }).as("searchByNameApi");
+
+    cy.get(CypressIds.pokemonSearchInputId).type(invalidSearch);
+    cy.wait("@searchByNameApi");
+
+    cy.get(CypressIds.pokemonNameId).should("not.exist");
+  });
+
   it(`should filter pokemons by fire type`, () => {
-    const pokemonType = "fire"; // TODO: should not hardcoded.
+    // TODO: should not hardcoded.
+    const pokemonType = "fire";
 
     cy.intercept({
       method: "GET",
@@ -35,7 +49,7 @@ describe("Validate Home Page", () => {
     }).as("typeFilterApi");
 
     cy.get(`${CypressIds.filterTypesSelectorId}`)
-      .select(3)
+      .select(pokemonType)
       .should("have.value", pokemonType);
 
     cy.wait("@typeFilterApi");
