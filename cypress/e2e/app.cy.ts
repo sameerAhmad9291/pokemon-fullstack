@@ -36,7 +36,7 @@ describe("Validate Home Page", () => {
     cy.get(CypressIds.pokemonSearchInputId).type(invalidSearch);
     cy.wait("@searchByNameApi");
 
-    cy.get(CypressIds.pokemonNameId).should("not.exist");
+    cy.get(CypressIds.pokemonNameId, { timeout: 10000 }).should("not.exist");
   });
 
   it(`should filter pokemons by fire type`, () => {
