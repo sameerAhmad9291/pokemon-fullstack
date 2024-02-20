@@ -8,11 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "gen": "npx prisma generate",
+    "setup": "npm run build && npm run gen",
     "deploy": "npm install && npm run db:up",
     "db:up": "npx prisma migrate dev --name init",
     "test": "jest",
-    "cypress:open": "cypress open",
-    "setup": "npm run build && npm run gen"
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
