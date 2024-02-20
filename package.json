@@ -12,7 +12,7 @@
     "db:up": "npx prisma migrate dev --name init",
     "test": "jest",
     "cypress:open": "cypress open",
-    "setup": "npm run install && npm run gen"
+    "setup": "npm run build && npm run gen"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
