@@ -23,6 +23,9 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        env: # Or as an environment variable
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          POKEMON_BASE_URL: ${{ vars.POKEMON_BASE_URL }}
         with:
           config-file: cypress.config.ts
           config: video=false
